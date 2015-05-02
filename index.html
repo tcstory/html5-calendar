@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title></title>
+    <link rel="stylesheet" href="css/semantic.min.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/semantic.min.js"></script>
+    <style>
+        html, body, time, span {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 100%;
+            font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+        }
+        .calendar-icon {
+            width: 8rem;
+            height: 8rem;
+            display: block;
+            margin: 1rem auto;
+            border-radius: .6rem;
+            box-shadow: 0 1px hsla(0, 0%, 86%, 1), 0 2px white, 0 3px hsla(0, 0%, 86%, 1), 0 4px white, 0 5px 0 1px hsla(0, 0%, 86%, 1);
+            background-color: white;
+        }
+        .calendar-icon span {
+            display: block;
+        }
+        .month {
+            background-color: hsla(35, 98%, 55%, 1);
+            border-top-right-radius: .6rem;
+            border-top-left-radius: .6rem;
+            font-weight: bold;
+            font-size: 1.5rem;
+            padding: .4rem 0;
+            text-align: center;
+            color: white;
+            border-bottom: 1px dotted hsla(28, 98%, 48%, 1);
+            box-shadow: 0 2px hsla(35, 98%, 55%, 1);
+        }
+        .day {
+            font-size: 2.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        .week {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: hsla(35, 98%, 55%, 1);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <time datetime="2015-04-30T22:04" class="calendar-icon">
+        <div class="ui inverted dimmer">
+            <div class="ui text loader">加载中...</div>
+        </div>
+        <span class="month">?</span>
+        <span class="day">?</span>
+        <span class="week">?</span>
+    </time>
+    <script>
+        "use strict";
+        var module = (function () {
+            var jqueryMap = {
+                elem_time: $('time'),
+                span_month: $('.month'),
+                span_day: $('.day'),
+                span_week: $('.week')
+            };
+            var configMap = {
+                now_time: new Date()
+            };
+
+
+            var getMonthInChinese;
+            var getDayInChinese;
+            var setDatetimeString;
+            var init;
+
+            getMonthInChinese = function () {
+                var _month = configMap.now_time.getMonth();
+                var str;
+                switch (_month) {
+                    case 0:
+                        str = '一月';
+                        break;
+                    case 1:
+                        str = '二月';
+                        break;
+                    case 2:
+                        str = '三月';
+                        break;
+                    case 3:
+                        str = '四月';
+                        break;
+                    case 4:
+                        str = '五月';
+                        break;
+                    case 5:
+                        str = '六月';
+                        break;
+                    case 6:
+                        str = '七月';
+                        break;
+                    case 7:
+                        str = '八月';
+                        break;
+                    case 8:
+                        str = '九月';
+                        break;
+                    case 9:
+                        str = '十月';
+                        break;
+                    case 10:
+                        str = '十一月';
+                        break;
+                    case 11:
+                        str = '十二月';
+                        break;
+                    default :
+                        break;
+                }
+                return str;
+            };
+
+            getDayInChinese = function () {
+                var _day = configMap.now_time.getDay();
+                var _str;
+                switch (_day) {
+                    case 0:
+                        _str = ' 星期日';
+                        break;
+                    case 1:
+                        _str = ' 星期一';
+                        break;
+                    case 2:
+                        _str = ' 星期二';
+                        break;
+                    case 3:
+                        _str = ' 星期三';
+                        break;
+                    case 4:
+                        _str = ' 星期四';
+                        break;
+                    case 5:
+                        _str = ' 星期五';
+                        break;
+                    case 6:
+                        _str = ' 星期六';
+                        break;
+                    default :
+                        break;
+                }
+                return _str;
+            };
+
+            setDatetimeString = function () {
+                var _datestring = configMap.now_time.toISOString();
+                _datestring.replace('Z', '+8');
+                return _datestring;
+            };
+
+            init = function () {
+                jqueryMap.span_day.text(configMap.now_time.getDate());
+                jqueryMap.span_month.text(getMonthInChinese());
+                jqueryMap.span_week.text(getDayInChinese());
+                jqueryMap.elem_time.attr('datetime', function (_index, cur_val) {
+                    return configMap.now_time.toISOString()
+                            .replace(/T../, 'T' + configMap.now_time.getHours())
+                            .replace('Z', '+0800');
+                });
+            };
+
+            return {
+                init: init
+            };
+
+        })();
+        $('time').dimmer('toggle');
+        setTimeout(function () {
+            $('time').dimmer('toggle');
+            module.init();
+        }, 2000);
+    </script>
+</body>
+</html>
