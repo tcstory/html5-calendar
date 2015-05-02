@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title></title>
+    <script src="jquery.min.js"></script>
+</head>
+<body>
+<input id="idiom" type="text" name="" value="" placeholder="Enter your idiom here">
+<br>
+<button id="submit" type="">Submit</button>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#submit").bind('click',function(){
+            var idiom=$("#idiom").val();
+            $.ajax({
+                type: "GET",
+                url: 'http://www.oxfordlearnersdictionaries.com/search/english/direct/',
+                data:{q:idiom},
+                async:true,
+                dataType : 'jsonp',   //you may use jsonp for cross origin request
+                crossDomain:true,
+                success: function(data, status, xhr) {
+                    alert(xhr.getResponseHeader('Location'));
+                }
+            });
+
+        });
+    });
+</script>
+</body>
+</html>
